@@ -1,0 +1,6 @@
+main: "com.github.alekseyvideman.${plugin.toLowerCase()}.${plugin}"
+name: ${plugin}
+description: ${description}
+version: ${version}
+api-version: 1.13
+author: WhiteLight

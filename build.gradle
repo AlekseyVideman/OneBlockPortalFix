@@ -1,0 +1,59 @@
+plugins {
+    id 'java'
+    id 'idea'
+}
+
+sourceCompatibility = "21"
+targetCompatibility = "21"
+
+repositories {
+    mavenCentral()
+
+    maven {
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+}
+
+dependencies {
+    compileOnly "io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT"
+}
+
+idea {
+    module {
+        downloadJavadoc(true)
+    }
+}
+
+jar {
+    archiveBaseName.set(rootProject.name)
+    archiveVersion.set(pluginVersion)
+    archiveClassifier.set(null)
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+tasks.named("processResources") {
+    filesMatching("plugin.yml") {
+        expand([
+                version: pluginVersion,
+                plugin : rootProject.name,
+                description: pluginDescription
+        ])
+    }
+}
+
+tasks.register('runServer') {
+    dependsOn(build)
+    doLast {
+        def pathToServer = new File("D:/DevCraft")
+        def pluginFileName = project.name + "-" + pluginVersion + ".jar"
+        ant.move(file: buildDir.getAbsolutePath() + "/libs/" + pluginFileName, tofile: pathToServer.toString() + "/plugins/" + pluginFileName)
+
+        new ProcessBuilder()
+                .command("cmd.exe", "/c", "start", "RUN.bat")
+                .directory(pathToServer)
+                .start()
+    }
+}
