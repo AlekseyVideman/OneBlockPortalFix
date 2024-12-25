@@ -13,7 +13,7 @@ public class OneBlockPortalFix extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(this, this);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void on(PlayerPortalEvent e) {
         if (e.isCancelled()) e.setCancelled(false);
     }
